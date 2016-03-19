@@ -8,6 +8,7 @@
 #include <unistd.h>
 
 #include <Python.h>
+#include <patchlevel.h>
 
 #define STACK_SIZE (1024*1024)
 static char container_stack[STACK_SIZE];
@@ -60,6 +61,9 @@ static PyMethodDef cloneMethods[] = {
 	{NULL, NULL}
 };
 
+
+#if (PY_MAJOR_VERSION == 3)
+
 static struct PyModuleDef clonemodule = {
 	PyModuleDef_HEAD_INIT,
 	"clone",
@@ -72,4 +76,15 @@ PyMODINIT_FUNC PyInit_clone(void)
 {
 	return PyModule_Create(&clonemodule);
 }
+
+#elif (PY_MAJOR_VERSION == 2)
+
+
+PyMODINIT_FUNC
+initclone(void)
+{
+	Py_InitModule("clone", cloneMethods);
+}
+
+#endif
 
