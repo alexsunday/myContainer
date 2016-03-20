@@ -93,6 +93,19 @@ static PyConst vars[] = {
 	{"CLONE_IO",  0x80000000}
 };
 
+int add_const(PyObject* m)
+{
+	int arrlen = sizeof(vars) / sizeof(PyConst);
+	for(int i=0; i != arrlen; ++i) {
+		if(PyModule_AddIntConstant(m, vars[i].varname, vars[i].varval)) {
+			return -1;
+		}
+	}
+
+	return 0;
+}
+
+
 #if (PY_MAJOR_VERSION == 3)
 
 static struct PyModuleDef clonemodule = {
@@ -109,13 +122,8 @@ PyMODINIT_FUNC PyInit_clone(void)
 	if(!m) {
 		return NULL;
 	}
+	add_const(m);
 
-	int arrlen = sizeof(vars) / sizeof(PyConst);
-	for(int i=0; i != arrlen; ++i) {
-		if(PyModule_AddIntConstant(m, vars[i].varname, vars[i].varval)) {
-			return NULL;
-		}
-	}
 	return m;
 }
 
@@ -125,7 +133,8 @@ PyMODINIT_FUNC PyInit_clone(void)
 PyMODINIT_FUNC
 initclone(void)
 {
-	Py_InitModule("clone", cloneMethods);
+	PyObject* m = Py_InitModule("clone", cloneMethods);
+	add_const(m);
 }
 
 #endif
