@@ -1,7 +1,7 @@
 
 import os
 import time
-from clone import clone
+from clone import clone, SIGCHLD, CLONE_NEWPID
 
 def container_main():
 	print("container inside, [%d]" % (os.getpid()))
@@ -13,7 +13,7 @@ def container_main():
 
 def main():
 	print('parent [%d]' % os.getpid())
-	pid = clone(container_main)
+	pid = clone(container_main, SIGCHLD | CLONE_NEWPID)
 	print('child process: [%d]' % pid)
 	pidv, status = os.waitpid(pid, 0)
 	print('pid: %d, status: %s' % (pidv, status))

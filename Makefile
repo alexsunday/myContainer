@@ -1,2 +1,3 @@
 all:
-	gcc -fpic -shared -o clone.so wrap.c -I /usr/include/python3.4
+	python3 setup.py build
+	cp build/lib*/clone*.so clone.so
