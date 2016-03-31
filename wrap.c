@@ -19,14 +19,11 @@ int clone_func(void* arg)
 {
 	printf("clone func inside, cb: [%p], pid: [%d]\n", my_callback, getpid());
 	PyObject* result = NULL;
-	printf("trace1\n");
 	result = PyObject_CallObject(my_callback, NULL);
 	if(!result) {
 		printf("ERROR occured, errno: [%d]\n", errno);
 		return 1;
 	}
-	printf("trace2, result: [%p]\n", result);
-	printf("trace3\n");
 
 	return 0;
 }

@@ -17,9 +17,11 @@ def mount_proc(private=True):
 
 def container_main():
     # 挂载proc
-    mount_proc(private=False)
     print("container inside, [%d]" % (os.getpid()))
     os.chroot('rootfs')
+    os.environ['PATH'] = '/bin:/sbin:/usr/bin:/usr/sbin'
+    os.chdir('/bin')
+    mount_proc(private=False)
     os.execv('/bin/sh', ['/bin/sh', ])
     print("something's wrong")
     return 123
