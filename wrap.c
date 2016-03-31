@@ -95,8 +95,9 @@ static PyConst vars[] = {
 
 int add_const(PyObject* m)
 {
+	int i = 0;
 	int arrlen = sizeof(vars) / sizeof(PyConst);
-	for(int i=0; i != arrlen; ++i) {
+	for(; i != arrlen; ++i) {
 		if(PyModule_AddIntConstant(m, vars[i].varname, vars[i].varval)) {
 			return -1;
 		}
